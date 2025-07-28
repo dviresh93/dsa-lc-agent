@@ -1,0 +1,6 @@
+openai-whisper
+pyttsx3
+numpy
+requests
+openai
+python-dotenv
