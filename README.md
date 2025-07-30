@@ -1,13 +1,79 @@
-# Voice Q&A Application
+# DSA LeetCode Interview Agent
 
-A complete voice-powered question and answer system that integrates speech-to-text, OpenAI GPT, and text-to-speech for natural voice interactions.
+A voice-powered DSA interview agent that integrates speech-to-text, LeetCode API, OpenAI GPT, and text-to-speech for interactive coding interview practice and technical discussions.
+
+## System Architecture
+
+```mermaid
+graph TB
+    subgraph "User Interface"
+        User[👤 User]
+        Mic[🎤 Microphone]
+        Speaker[🔊 Speaker]
+    end
+    
+    subgraph "Core Application"
+        App[🎙️ VoiceQAApp<br/>Main Controller]
+    end
+    
+    subgraph "Speech Processing"
+        STT[📝 SpeechToText<br/>Whisper Model]
+        TTS[🔊 TextToSpeech<br/>pyttsx3]
+    end
+    
+    subgraph "AI & Data Processing"
+        QA[🧠 QAProcessor<br/>OpenAI GPT]
+        LeetMCP[📊 LeetCodeMCPClient<br/>MCP Server]
+        LeetAPI[🔗 LeetCodeAPIClient<br/>Direct API]
+    end
+    
+    subgraph "External Services"
+        OpenAI[🤖 OpenAI API<br/>GPT Models]
+        LeetCode[💻 LeetCode<br/>Problems & Data]
+        Whisper[🎯 Whisper<br/>Speech Models]
+    end
+    
+    %% User interactions
+    User -->|Voice Input| Mic
+    Speaker -->|Audio Output| User
+    
+    %% Main flow
+    Mic -->|Audio Stream| STT
+    STT -->|Transcribed Text| App
+    App -->|Text Query| QA
+    QA -->|AI Response| App
+    App -->|Response Text| TTS
+    TTS -->|Audio Output| Speaker
+    
+    %% Data sources
+    QA -->|API Calls| OpenAI
+    QA -->|Problem Data| LeetMCP
+    QA -->|Problem Data| LeetAPI
+    LeetMCP -->|MCP Protocol| LeetCode
+    LeetAPI -->|REST API| LeetCode
+    STT -->|Model Loading| Whisper
+    
+    %% Styling
+    classDef userClass fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    classDef coreClass fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef processClass fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
+    classDef aiClass fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    classDef externalClass fill:#fafafa,stroke:#424242,stroke-width:2px
+    
+    class User,Mic,Speaker userClass
+    class App coreClass
+    class STT,TTS processClass
+    class QA,LeetMCP,LeetAPI aiClass
+    class OpenAI,LeetCode,Whisper externalClass
+```
 
 ## Features
 
 - 🎤 **Speech Recognition**: Uses OpenAI Whisper for accurate speech-to-text conversion
 - 🧠 **AI-Powered Responses**: Integrates with OpenAI GPT for intelligent question answering
 - 🔊 **Text-to-Speech**: Converts AI responses back to natural-sounding speech
-- 💬 **Interactive Mode**: Continuous voice conversation loop
+- 💻 **LeetCode Integration**: Access to problems, solutions, and coding interview scenarios
+- 💬 **Interactive Mode**: Continuous voice conversation loop for interview practice
 - 🛠️ **Fallback Support**: Works even without OpenAI API key (limited functionality)
 
 ## Setup
@@ -111,11 +177,14 @@ While running the app, you can say:
 
 ## Files Structure
 
-- `voice_qa_app.py`: Main application
-- `speech_to_text.py`: Whisper integration
-- `text_to_speech.py`: TTS functionality  
-- `qa_processor.py`: OpenAI API integration
+- `voice_qa_app.py`: Main application controller
+- `speech_to_text.py`: Whisper speech recognition integration
+- `text_to_speech.py`: Text-to-speech functionality  
+- `qa_processor.py`: OpenAI API and LeetCode integration
+- `leetcode_api_client.py`: Direct LeetCode API client
+- `leetcode_mcp_client.py`: LeetCode MCP server client
 - `requirements.txt`: Python dependencies
+- `install_dependencies.sh`: System dependency installer
 
 ## License
 
