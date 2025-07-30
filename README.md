@@ -5,66 +5,18 @@ A voice-powered DSA interview agent that integrates speech-to-text, LeetCode API
 ## System Architecture
 
 ```mermaid
-graph TB
-    subgraph "User Interface"
-        User[👤 User]
-        Mic[🎤 Microphone]
-        Speaker[🔊 Speaker]
-    end
+flowchart LR
+    A[🎤 Voice Input] --> B[📝 Speech-to-Text<br/>Whisper]
+    B --> C[🧠 AI Processor<br/>OpenAI + LeetCode]
+    C --> D[🔊 Text-to-Speech]
+    D --> E[🔊 Voice Output]
     
-    subgraph "Core Application"
-        App[🎙️ VoiceQAApp<br/>Main Controller]
-    end
+    C -.-> F[💻 LeetCode API]
+    C -.-> G[🤖 OpenAI API]
     
-    subgraph "Speech Processing"
-        STT[📝 SpeechToText<br/>Whisper Model]
-        TTS[🔊 TextToSpeech<br/>pyttsx3]
-    end
-    
-    subgraph "AI & Data Processing"
-        QA[🧠 QAProcessor<br/>OpenAI GPT]
-        LeetMCP[📊 LeetCodeMCPClient<br/>MCP Server]
-        LeetAPI[🔗 LeetCodeAPIClient<br/>Direct API]
-    end
-    
-    subgraph "External Services"
-        OpenAI[🤖 OpenAI API<br/>GPT Models]
-        LeetCode[💻 LeetCode<br/>Problems & Data]
-        Whisper[🎯 Whisper<br/>Speech Models]
-    end
-    
-    %% User interactions
-    User -->|Voice Input| Mic
-    Speaker -->|Audio Output| User
-    
-    %% Main flow
-    Mic -->|Audio Stream| STT
-    STT -->|Transcribed Text| App
-    App -->|Text Query| QA
-    QA -->|AI Response| App
-    App -->|Response Text| TTS
-    TTS -->|Audio Output| Speaker
-    
-    %% Data sources
-    QA -->|API Calls| OpenAI
-    QA -->|Problem Data| LeetMCP
-    QA -->|Problem Data| LeetAPI
-    LeetMCP -->|MCP Protocol| LeetCode
-    LeetAPI -->|REST API| LeetCode
-    STT -->|Model Loading| Whisper
-    
-    %% Styling
-    classDef userClass fill:#e1f5fe,stroke:#01579b,stroke-width:2px
-    classDef coreClass fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
-    classDef processClass fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
-    classDef aiClass fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    classDef externalClass fill:#fafafa,stroke:#424242,stroke-width:2px
-    
-    class User,Mic,Speaker userClass
-    class App coreClass
-    class STT,TTS processClass
-    class QA,LeetMCP,LeetAPI aiClass
-    class OpenAI,LeetCode,Whisper externalClass
+    style A fill:#e3f2fd
+    style E fill:#e3f2fd
+    style C fill:#fff3e0
 ```
 
 ## Features
